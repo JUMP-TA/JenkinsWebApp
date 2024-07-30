@@ -17,10 +17,9 @@ pipeline {
                 script {
                     echo "Logging into Docker Hub"
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PWD', usernameVariable: 'DOCKER_USER')]) {
-                        bat """
-                            echo ${DOCKER_PWD} > docker_password.txt
-                            docker login -u ${DOCKER_USER} --password-stdin < docker_password.txt
-                        """
+                        sh '''
+                            echo $DOCKER_PWD | docker login -u $DOCKER_USER --password-stdin
+                        '''
                     }
                 }
             }
@@ -51,8 +50,8 @@ pipeline {
             steps {
                 script {
                     echo "Deploying Docker image"
-                    bat "docker pull seanbryson/jenkinswebapp:${env.BUILD_ID}"
-                    bat "docker run -d -p 3000:3000 seanbryson/jenkinswebapp:${env.BUILD_ID}"
+                    sh "docker pull seanbryson/jenkinswebapp:${env.BUILD_ID}"
+                    sh "docker run -d -p 3000:3000 seanbryson/jenkinswebapp:${env.BUILD_ID}"
                 }
             }
         }
