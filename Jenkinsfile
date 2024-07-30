@@ -16,7 +16,9 @@ pipeline {
             steps {
                 script {
                     echo "Building Docker image"
-                    def app = docker.build("seanbryson/jenkinswebapp:${env.BUILD_ID}")
+                    def app = docker.build("seanbryson/jenkinswebapp:${env.BUILD_ID}") {
+                        sh 'docker build -t seanbryson/jenkinswebapp:${env.BUILD_ID} --build-arg NODE_IMAGE=node:16 .'
+                    }
                 }
             }
         }
@@ -26,11 +28,17 @@ pipeline {
                 script {
                     echo "Logging into Docker Hub"
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PWD', usernameVariable: 'DOCKER_USER')]) {
-                        echo "Docker Username: ${env.DOCKER_USER}"
-                        echo "Docker Password: ${env.DOCKER_PWD}"  // Debugging purposes, remove after verifying
+                        echo "Docker Username: ${DOCKER_USER}"
 
+                        // This line is for debugging, you should remove it after testing
                         bat """
-                            echo %DOCKER_PWD% | docker login -u %DOCKER_USER% --password-stdin
+                            echo ${env.DOCKER_PWD}
+                        """
+
+                        // Using a separate variable to avoid special character issues
+                        bat """
+                            echo ${DOCKER_PWD} > docker_password.txt
+                            docker login -u ${DOCKER_USER} --password-stdin < docker_password.txt
                         """
                     }
 
@@ -61,5 +69,6 @@ pipeline {
         }
     }
 }
+
 
 
