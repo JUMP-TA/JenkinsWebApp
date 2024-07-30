@@ -26,6 +26,9 @@ pipeline {
                 script {
                     echo "Logging into Docker Hub"
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PWD', usernameVariable: 'DOCKER_USER')]) {
+                        echo "Docker Username: ${env.DOCKER_USER}"
+                        echo "Docker Password: ${env.DOCKER_PWD}"  // Debugging purposes, remove after verifying
+
                         bat """
                             echo %DOCKER_PWD% | docker login -u %DOCKER_USER% --password-stdin
                         """
@@ -58,4 +61,5 @@ pipeline {
         }
     }
 }
+
 
