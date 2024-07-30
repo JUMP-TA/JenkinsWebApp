@@ -30,7 +30,7 @@ pipeline {
                     }
 
                     echo "Pushing Docker image to Docker Hub"
-                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKERHUB_CREDENTIALS') {
+                    docker.withRegistry('https://index.docker.io/v1/', 'DOCKERHUB_CREDENTIALS') {
                         def app = docker.image("seanbryson/jenkinswebapp:${env.BUILD_ID}")
                         app.push()
                     }
