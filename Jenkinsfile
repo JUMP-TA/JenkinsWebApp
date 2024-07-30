@@ -26,11 +26,13 @@ pipeline {
                 script {
                     echo "Logging into Docker Hub"
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PWD', usernameVariable: 'DOCKER_USER')]) {
-                        bat "echo %DOCKER_PWD% | docker login -u %DOCKER_USER% --password-stdin"
+                        bat """
+                            echo %DOCKER_PWD% | docker login -u %DOCKER_USER% --password-stdin
+                        """
                     }
 
                     echo "Pushing Docker image to Docker Hub"
-                    docker.withRegistry('https://index.docker.io/v1/', 'DOCKERHUB_CREDENTIALS') {
+                    docker.withRegistry('https://registry.hub.docker.com', 'DOCKERHUB_CREDENTIALS') {
                         def app = docker.image("seanbryson/jenkinswebapp:${env.BUILD_ID}")
                         app.push()
                     }
