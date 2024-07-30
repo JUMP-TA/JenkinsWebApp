@@ -1,4 +1,6 @@
-### Step-by-Step Instructions
+# Jenkins Pipeline Exercise
+
+This exercise should set up a Jenkins pipeline to automate the build, push, and deployment of a Node.js application (using Docker). You will use Jenkins to clone a GitHub repository, build a Docker image, push the image to Docker Hub, and deploy the Docker container.
 
 #### 1. **Setup Jenkins**
 
@@ -12,7 +14,7 @@
 
 3. **Install Required Plugins**:
    - Go to `Manage Jenkins` -> `Manage Plugins`.
-   - Install the following plugins:
+   - Make sure the following plugins are installed:
      - Git Plugin
      - Docker Pipeline Plugin
      - Credentials Binding Plugin
@@ -79,4 +81,4 @@ Create a `Jenkinsfile` in the root of your GitHub repository (included here)
 2. **Run the Docker Container Locally**:
    - Ensure that the Docker container is running on your local machine by visiting `http://localhost:3000`.
 
-By following these steps, you should be able to set up a Jenkins pipeline to build, push, and deploy a Node.js application using Docker. If you encounter any issues, feel free to ask for further assistance.
+These steps demonstrate how to set up a Jenkins pipeline that builds, pushes, and deploys a Node.js application.
